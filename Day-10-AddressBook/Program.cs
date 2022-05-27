@@ -2,58 +2,38 @@
 
 using Day_10_AddressBook;
 
-Console.WriteLine("---- Welcome To Address Book Application ----\n");
+Console.WriteLine("------- Welcome To Address Book Application -------");
 
-int choice=0;
-
-while(choice!=6)
-{
-
-    Console.WriteLine("Choose the Operation:-\n1.Create Addressbook \n2.Add New Contact\n3.Modify Existing Contact\n4.Delete Existing Contact\n5.Display Addressbook Details\n6.Exit\n");
-    Console.Write("Enter the choice :- ");
-    choice = int.Parse(Console.ReadLine());
-
-    switch (choice)
+    AddressBook contact = new AddressBook();  //creating obj of AddressBook class to access it methods
+    bool check = true;
+    while (check)
+    {
+        Console.Write("\nChooce Operation : \n1.Create AddressBooks\n2.Display AddressBook Contact\n3.Add New Contact to AddressBook\n4.Update Contact\n5.Display Book\n7.Delete Contact\n8.Exit\nEnter your Choice :- ");
+        int option = Convert.ToInt32(Console.ReadLine());
+        switch (option)
         {
             case 1:
-                Console.WriteLine("\n>>>> Enter the Details :- ");
-                AddressBook.GetCustomer(); //calling method which takes input from user
-                Console.WriteLine("\nContact Added Successfully...\n");
+                Console.WriteLine("\n>> Create AddressBook Operation :");
+                Console.Write("\nHow many AddressBooks You want to create :- ");
+                int countofBook = Convert.ToInt32(Console.ReadLine());
+                int num = 0;
+                while (countofBook > 0)
+                {   num++; 
+                    Console.Write("\nEnter the {0} AddressBook Name to create :- ",num);
+                    string name = Console.ReadLine();
+                    contact.AddBook(name);
+                    countofBook--;
+                }
                 break;
-
             case 2:
-                Console.WriteLine("\n>>>> Enter the Details :- ");
-                AddressBook.AddContact(); //calling method which takes input from user
+                Console.WriteLine("\n>> AddressBooks Details :");
+                contact.DisplayBookData();
+                break;
+           
+            case 8:
+                check = false;
                 break;
 
-            case 3:
-                Console.WriteLine("\n>>>> Modify Contact Details :-\n");
-                AddressBook.EditConatact();// calling method which will modify Exsiting contact details
-                break;
-            
-            case 4:
-                Console.WriteLine("\n>>>> Delete Contact :-\n");
-                AddressBook.DeletePeople();//calling method which delete Exhisting contact by filtering put first name
-                break;
-
-            case 5:
-                Console.WriteLine("\n>>>> Address Book Details :-\n");
-                AddressBook.ListingPeople(); //calling this method to display the address book contact
-                break;
-
-        default:
-            if (choice >= 5)
-            {
-                Console.WriteLine("\n>> Please Enter valid choice.....\n");
-            }
-            else
-            {
-                Console.WriteLine("\n------ Thank You ------");
-            }
-            
-                break;   
-
+            default: Console.WriteLine("\nPlease Enter correct choice!!");break;
         }
-
-}
-
+    }

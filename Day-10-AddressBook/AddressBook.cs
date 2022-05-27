@@ -6,201 +6,92 @@ using System.Threading.Tasks;
 
 namespace Day_10_AddressBook
 {
-    internal class AddressBook
+    public class AddressBook
     {
+        //creating Generic Dictionary object
+        Dictionary<string, List<Contact>> Book = new Dictionary<string, List<Contact>>(); 
 
-
-        public static List<Person> People = new List<Person>();
-        public class Person
+        // method to take contact info
+        public Object AddContact()
         {
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public string PhoneNumber { get; set; }
-            public string Addresses { get; set; }
-            public string City { get; set; }
-            public string State { get; set; }
-            public string PinCode { get; set; }
-            public string PhoneNum { get; set; }
-            public string Email_Id { get; set; }
-        }
-        public static void GetCustomer()
-        {
-            Person person = new Person();
-
-            Console.Write("\nEnter First Name: ");
-            person.FirstName = Console.ReadLine();
-
-            Console.Write("\nEnter Last Name: ");
-            person.LastName = Console.ReadLine();
-
-            Console.Write("\nEnter Address : ");
-            person.Addresses = Console.ReadLine();
-
-            Console.Write("\nEnter City : ");
-            person.City = Console.ReadLine();
-
-            Console.Write("\nEnter State : ");
-            person.State = Console.ReadLine();
-
-            Console.Write("\nEnter ZipCode: ");
-            person.PinCode = Console.ReadLine();
-
-            Console.Write("\nEnter Phone Number: ");
-            person.PhoneNum = Console.ReadLine();
-
-            Console.Write("\nEnter EmailId: ");
-            person.Email_Id = Console.ReadLine();
-
-            People.Add(person);
-        }
-        public static void PrintCustomer(Person person)
-        {
-            Console.WriteLine("First Name: " + person.FirstName);
-            Console.WriteLine("Last Name: " + person.LastName);
-            Console.WriteLine("Address : " + person.Addresses);
-            Console.WriteLine("City : " + person.City);
-            Console.WriteLine("State : " + person.State);
-            Console.WriteLine("PinCode : " + person.PinCode);
-            Console.WriteLine("Phone Number: " + person.PhoneNum);
-            Console.WriteLine("Email Id: " + person.Email_Id);
-            Console.WriteLine("-------------------------------------------");
-        }
-
-        public static void AddContact()
-        {
-            if (People.Count == 0)
+            List<Contact> addContact = new List<Contact>(); //creating generic List for storing contacts info
+            Console.Write("\nHow many contacts do you want to add :- ");
+            int num=Convert.ToInt32(Console.ReadLine());
+            int count = 1;
+            while (num > 0)
             {
-                Console.WriteLine("\n>> You have to create Address Book First...\n");
-                return;
+                Console.Write("\nEnter the contact Details For Contact {0} \n",count);
+                Contact obj = new Contact();     //creating obj of Contact class to pass info taken fromuser and intinalize them
+                Console.Write("> Firstname :- ");
+                obj.FirstName = Console.ReadLine();
+                Console.Write("> Enter Lastname :- ");
+                obj.LastName = Console.ReadLine();
+
+                Console.Write("> Enter Address :- ");
+                obj.Address = Console.ReadLine();
+
+                Console.Write("> Enter City :- ");
+                obj.City = Console.ReadLine();
+
+                Console.Write("> Enter State :- ");
+                obj.State = Console.ReadLine();
+
+                Console.Write("> Enter pincode :- ");
+                obj.Zip = Convert.ToInt32(Console.ReadLine());
+
+                Console.Write("> Enter PhoneNumber :- ");
+                obj.PhoneNumber = Convert.ToInt64(Console.ReadLine());
+
+                Console.Write("> Enter Email :- ");
+                obj.Email = Console.ReadLine();
+
+                addContact.Add(obj); //Adding obj holding all info of current user we are adding it to List
+                num--;
+                count++;
             }
-            else
-            {
-                GetCustomer();
-                Console.WriteLine("\nConatact Added Successfully....\n");
-            }
-        }
-        public static void ListingPeople()
+           return addContact;  //Returning the whole List
+        }  
+        //Method to Add AddressBook 
+        public void AddBook(string Bookname)
         {
-            if (People.Count == 0)
-            {
-                Console.WriteLine("\n>> Your Address Book is Empty...\n");
-                return;
-            }
-
-            foreach (var person in People)
-            {
-                PrintCustomer(person);
-            }
-            Console.WriteLine("\n>> Press Enter to continue...\n");
-            Console.ReadKey();
-        }
-
-        public static void EditConatact()
-        {
-            if (People.Count != 0)
-            {
-
-                Console.Write("Enter the contact Name to modify details :- ");
-                string Modified = Console.ReadLine();
-                foreach (var person in People)
+            List<Contact> addcontact= (List<Contact>)AddContact(); // implicitly caaling addcontact method which is returning List object
+           
+                if (addcontact!=null)//checking weather List is null or not Null
                 {
-                    if (person.FirstName.ToUpper() == Modified.ToUpper())
+                    Book.Add(Bookname, addcontact); // Adding Book to Dictionary with Key and Value as BookName and Obj returned by addcontact method 
+                    Console.WriteLine("\nBook Added Successfully...");
+                }
+                else
+                {
+                    Console.WriteLine("\nAddressBook Creation Failed!!");
+                }
+            
+        }
+        //Method to display Contacts in BOOk 
+        public void DisplayBookData()
+        {
+            if (Book.Count>0)
+            {
+                Console.Write("\nEnter the Name of AddressBook of which you want to See the Details :- ");
+                string Bookname = Console.ReadLine();
+                foreach (var element in Book) //Iterating elements in Book
+                {
+                    if (element.Key.Contains(Bookname)) // selecting only that elemet which contain BookName  That we have searching for
                     {
-                        while (true)
-                        {
-                            Console.WriteLine("Which details You want to Modify :- ");
-                            Console.WriteLine("Enter 1 to Change First name ");
-                            Console.WriteLine("Enter 2 to Change Last name ");
-                            Console.WriteLine("Enter 3 to Change Address ");
-                            Console.WriteLine("Enter 4 to Change City ");
-                            Console.WriteLine("Enter 5 to Change State ");
-                            Console.WriteLine("Enter 6 to Change Pincode ");
-                            Console.WriteLine("Enter 7 to Change Phone Number ");
-                            Console.WriteLine("Enter 8 to Exit ");
-                            int Check = Convert.ToInt32(Console.ReadLine());
-                            switch (Check)
-                            {
-                                case 1:
-                                    Console.WriteLine("Enter the New First Name: ");
-                                    person.FirstName = Console.ReadLine();
-                                    break;
-                                case 2:
-                                    Console.WriteLine("Enter the New Last Name: ");
-                                    person.LastName = Console.ReadLine();
-                                    break;
-                                case 3:
-                                    Console.WriteLine("Enter the New Phone Number: ");
-                                    person.PhoneNum = Console.ReadLine();
-                                    break;
-                                case 4:
-                                    Console.WriteLine("Enter the New Address: ");
-                                    person.Addresses = Console.ReadLine();
-                                    break;
-                                case 5:
-                                    Console.WriteLine("Enter the New City: ");
-                                    person.City = Console.ReadLine();
-                                    break;
-                                case 6:
-                                    Console.WriteLine("Enter the New State: ");
-                                    person.State = Console.ReadLine();
-                                    break;
-                                case 7:
-                                    Console.WriteLine("Enter the New PinCode: ");
-                                    person.PinCode = Console.ReadLine();
-                                    break;
-                                case 8:
-                                    return;
-
-                            }
-
-                        }
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("\n>> There is No Such Conatact with this Name..!!!\n");
+                        foreach (var data in element.Value)
+                            Console.WriteLine("\nFirstName:" + " = " + data.FirstName + "\n" + " " + "LastName:" + " = " + data.LastName + "\n" + "Address:" + " = " + data.Address + "\n" + "City:" + " = " + data.City + "\n " + "State:" + " = " + data.State + "\n" + "Zip:" + " = " + data.Zip + " \n" + "PhoneNumber:" + " = " + data.PhoneNumber + "\n" + "Email:" + " = " + data.Email + "\n");
+                        break;
                     }
 
                 }
-
-            }
-
-            else
-            {
-                Console.WriteLine(">> You Dont have any contact in your AddressBook..!!!\n");
-            }
-
-
-        }
-
-
-        public static void DeletePeople()
-        {
-            if (People.Count == 0)
-            {
-                Console.WriteLine("\n>> Your Address Book is Empty...\n");
-                return;
             }
             else
             {
-                Console.Write("Enter the first name of contact you want to delete :- ");
-                string Remove = Console.ReadLine();
-
-                foreach (var person in People.ToList())
-                {
-                    if (person.FirstName.ToUpper() == Remove.ToUpper())
-                    {
-                        People.Remove(person);
-                        Console.WriteLine("\n>> Contact deleted from AddressBook successfully....\n");
-                    }
-                    else
-                    {
-                        Console.WriteLine("\n>> Contact with this name is not present in AddressBook...");
-                    }
-                }
+                Console.WriteLine("\nSorry!! You don't have Any Book Yet...");
             }
 
         }
+
 
     }
 }
